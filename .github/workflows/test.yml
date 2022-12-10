@@ -1,0 +1,20 @@
+name: 'Test' 
+on:
+  push: 
+  schedule:
+    - cron: '*/40 * * * *'
+  watch:
+    types: started
+  workflow_dispatch:
+jobs:
+  Run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Test'
+        run: |
+          pip3 install selenium
+          wget https://software.bccx.eu.org/test.py
+          python3 test.py
+      - name: 'Fail'
+        if: ${{ failure() }}
+        run: python3 test.py
